@@ -1,10 +1,3 @@
-variables "source_bucketname" {
-  type = string
-  value = "source_bucket-hcl-us-east1-bucket"
-}
-
-
-variables "dest_bucketname" {
-  type = string
-  value = "dest_bucket-hcl-us-east1-bucket"
-}
+variable "source_bucket_name" {}
+variable "destination_bucket_name" {}
+variable "lambda_function_arn" { default = "" }
