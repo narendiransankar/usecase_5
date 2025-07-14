@@ -1,5 +1,15 @@
-variable "source_bucket_name" {}
-variable "destination_bucket_name" {}
-variable "sns_topic_name" {}
-variable "notification_email" {}
-variable "lambda_function_name" {}
+variable "source_bucket_name" {
+  type = string
+}
+variable "destination_bucket_name" {
+  type = string
+}
+variable "sns_topic_name" {
+  type = string
+}
+variable "notification_email" {
+  type = string
+}
+variable "lambda_function_name" {
+  type = string
+}
