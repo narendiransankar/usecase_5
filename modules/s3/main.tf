@@ -1,17 +1,18 @@
-resource "aws_s3_bucket" "source_bucket" {
-  bucket = var.source_bucketname
-
-  tags = {
-    Name        = "My bucket"
-    Environment = "Dev"
-  }
+esource "aws_s3_bucket" "source" {
+  bucket = var.source_bucket_name
 }
 
-resource "aws_s3_bucket" "dest_bucket" {
-  bucket = var.dest_bucketname
+resource "aws_s3_bucket" "destination" {
+  bucket = var.destination_bucket_name
+}
 
-  tags = {
-    Name        = "My bucket"
-    Environment = "Dev"
+resource "aws_s3_bucket_notification" "lambda_trigger" {
+  bucket = aws_s3_bucket.source.id
+
+  lambda_function {
+    events = ["s3:ObjectCreated:*"]
+    lambda_function_arn = var.lambda_function_arn
   }
+
+  depends_on = [aws_s3_bucket.source]
 }
