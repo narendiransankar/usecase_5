@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "source_bucket" {
-  bucket = "source_bucket-hcl-us-east1-bucket"
+  bucket = var.source_bucketname
 
   tags = {
     Name        = "My bucket"
