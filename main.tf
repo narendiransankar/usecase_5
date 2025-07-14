@@ -1,5 +1,22 @@
 module "s3" {
-  source          = "./modules/s3"
-  source_bucketname             = var.source_bucketname
-  dest_bucketname             = var.dest_bucketname
+  source = "./modules/s3"
+  source_bucket_name      = var.source_bucket_name
+  destination_bucket_name = var.destination_bucket_name
+}
+
+module "sns" {
+  source         = "./modules/sns"
+  topic_name     = var.sns_topic_name
+  email_endpoint = var.notification_email
+}
+
+module "lambda" {
+  source                  = "./modules/lambda"
+  lambda_function_name    = var.lambda_function_name
+  handler_name            = "image_processor.lambda_handler"
+  runtime                 = "python3.11"
+  source_bucket_name      = var.source_bucket_name
+  destination_bucket_name = var.destination_bucket_name
+  sns_topic_arn           = module.sns.topic_arn
+  lambda_s3_trigger_arn   = module.s3.source_bucket_arn
 }
