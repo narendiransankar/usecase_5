@@ -15,7 +15,7 @@ module "lambda" {
   source                  = "./modules/lambda"
   lambda_function_name    = var.lambda_function_name
   handler_name            = "image_processor.lambda_handler"
-  runtime                 = "python3.9"
+  runtime                 = var.run_time
   source_bucket_name      = var.source_bucket_name
   destination_bucket_name = var.destination_bucket_name
   sns_topic_arn           = module.sns.topic_arn
