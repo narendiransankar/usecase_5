@@ -7,7 +7,7 @@ s3 = boto3.client('s3')
 sns = boto3.client('sns')
 
 bucket_1 = 'image-hcl-apsouth1-upload-source'
-bucket_2 = 'image-hcl-apsouth1-processed-destination '
+bucket_2 = 'image-hcl-apsouth1-processed-destination'
 sns_topic_arn = 'arn:aws:sns:ap-south-1:012889719104:image-processing-updates'
 
 def lambda_handler(event, context):
