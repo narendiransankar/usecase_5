@@ -1,3 +1,9 @@
+data "archive_file" "lambda_zip" {
+  type        = "zip"
+  source_dir  = "${path.module}/lambda_function_payload"
+  output_path = "${path.module}/lambda_function_payload.zip"
+}
+
 resource "aws_iam_role" "lambda_exec" {
   name = "lambda_exec_role"
 
@@ -25,8 +31,8 @@ resource "aws_lambda_function" "image_processor" {
   handler       = var.handler_name
   runtime       = var.runtime
 
-  filename         = "${path.module}/lambda_function_payload.zip"
-  source_code_hash = filebase64sha256("${path.module}/lambda_function_payload.zip")
+  filename         = data.archive_file.lambda_zip.output_path
+  source_code_hash = data.archive_file.lambda_zip.output_base64sha256
 
   environment {
     variables = {
