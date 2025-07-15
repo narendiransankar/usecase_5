@@ -25,6 +25,36 @@ resource "aws_iam_role_policy_attachment" "lambda_policy" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
+resource "aws_iam_policy" "lambda_extended_policy" {
+  name = "lambda-s3-sns-policy"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject"
+        ],
+        Resource = [
+          "arn:aws:s3:::${var.source_bucket_name}/*",
+          "arn:aws:s3:::${var.destination_bucket_name}/*"
+        ]
+      },
+      {
+        Effect = "Allow",
+        Action = "sns:Publish",
+        Resource = var.sns_topic_arn
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_extended_attachment" {
+  role       = aws_iam_role.lambda_exec.name
+  policy_arn = aws_iam_policy.lambda_extended_policy.arn
+}
 resource "aws_lambda_function" "image_processor" {
   function_name = var.lambda_function_name
   role          = aws_iam_role.lambda_exec.arn
