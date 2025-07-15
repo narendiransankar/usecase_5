@@ -22,6 +22,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Checkout PR branch
+        if: github.event_name == 'pull_request'
+        run: |
+          git fetch origin ${{ github.head_ref }}:${{ github.head_ref }}
+          git checkout ${{ github.head_ref }}
+          
       # - name: Set up Python (for Checkov)
       #   uses: actions/setup-python@v4
       #   with:
@@ -93,12 +99,6 @@ jobs:
           terraform plan -out tfplan.binary
           terraform show -json tfplan.binary > tfplan.json
           conftest test tfplan.json -p policy
-
-      - name: Checkout PR branch
-        if: github.event_name == 'pull_request'
-        run: |
-          git fetch origin ${{ github.head_ref }}:${{ github.head_ref }}
-          git checkout ${{ github.head_ref }}
 
           
       - name: Generate Terraform Documentation
