@@ -10,7 +10,7 @@ variable "sns_topic_name" {
 variable "notification_email" {
   type = string
 }
-variable "run_time" {
+variable "runtime" {
   type = string
 }
 variable "lambda_function_name" {
