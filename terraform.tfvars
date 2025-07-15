@@ -4,3 +4,6 @@ sns_topic_name          = "image-processing-updates"
 notification_email      = "narendiran.sankar@hcltech.com"
 lambda_function_name    = "image-processing-lambda"
 runtime                 = "python3.9"
+
+
+

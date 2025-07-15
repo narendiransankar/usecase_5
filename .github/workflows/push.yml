@@ -2,10 +2,10 @@ name: Terraform Deploy
 
 on:
   workflow_dispatch:
-  # push:
-  #   branches:
-  #     - '**'
-  #     - main   
+  push:
+    branches:
+      - '**'
+      - main   
   pull_request:
     branches:
       - main
@@ -17,11 +17,20 @@ jobs:
       contents: write
       pull-requests: write
       id-token: write 
+    env:
+      GITHUB_TOKEN: ${{ secrets.CICD_TOKEN }}
+
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Checkout PR branch
+        if: github.event_name == 'pull_request'
+        run: |
+          git fetch origin ${{ github.head_ref }}:${{ github.head_ref }}
+          git checkout ${{ github.head_ref }}
+          
       # - name: Set up Python (for Checkov)
       #   uses: actions/setup-python@v4
       #   with:
@@ -93,6 +102,7 @@ jobs:
           terraform plan -out tfplan.binary
           terraform show -json tfplan.binary > tfplan.json
           conftest test tfplan.json -p policy
+
           
       - name: Generate Terraform Documentation
         uses: terraform-docs/gh-actions@v1.4.1
@@ -100,11 +110,26 @@ jobs:
           working-dir: .
           output-file: README.md
           output-method: inject
-          git-push: "true"
+          git-push: true
           git-commit-message: "docs: Update Terraform documentation"
-          git-branch: ${{ github.head_ref }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          git-push-user-name: "GitHub Actions"
+          git-push-user-email: "actions@github.com"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: true
 
+      - name: Push README.md to PR branch
+        if: github.event_name == 'pull_request'
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git checkout ${{ github.head_ref }}
+      
+          git add README.md
+      
+          # Only commit if there's a change
+          git diff --cached --quiet || git commit -m "docs: Update Terraform documentation from PR"
+          git push origin HEAD:${{ github.head_ref }}
           
       - name: Terraform Plan
         run: terraform plan
