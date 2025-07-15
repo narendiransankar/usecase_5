@@ -13,6 +13,7 @@ variable "notification_email" {
 variable "runtime" {
   type = string
 }
+
 variable "lambda_function_name" {
   type = string
 }
