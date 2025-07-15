@@ -2,6 +2,7 @@ module "s3" {
   source = "./modules/s3"
   source_bucket_name      = var.source_bucket_name
   destination_bucket_name = var.destination_bucket_name
+  lambda_function_arn    = module.lambda.lambda_function_arn
 }
 
 module "sns" {
