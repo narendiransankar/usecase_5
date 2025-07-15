@@ -30,7 +30,7 @@ No resources.
 | <a name="input_destination_bucket_name"></a> [destination\_bucket\_name](#input\_destination\_bucket\_name) | n/a | `string` | n/a | yes |
 | <a name="input_lambda_function_name"></a> [lambda\_function\_name](#input\_lambda\_function\_name) | n/a | `string` | n/a | yes |
 | <a name="input_notification_email"></a> [notification\_email](#input\_notification\_email) | n/a | `string` | n/a | yes |
-| <a name="input_run_time"></a> [run\_time](#input\_run\_time) | n/a | `string` | n/a | yes |
+| <a name="input_runtime"></a> [runtime](#input\_runtime) | n/a | `string` | n/a | yes |
 | <a name="input_sns_topic_name"></a> [sns\_topic\_name](#input\_sns\_topic\_name) | n/a | `string` | n/a | yes |
 | <a name="input_source_bucket_name"></a> [source\_bucket\_name](#input\_source\_bucket\_name) | n/a | `string` | n/a | yes |
 
