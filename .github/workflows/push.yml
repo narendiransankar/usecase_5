@@ -93,6 +93,13 @@ jobs:
           terraform plan -out tfplan.binary
           terraform show -json tfplan.binary > tfplan.json
           conftest test tfplan.json -p policy
+
+      - name: Checkout PR branch
+        if: github.event_name == 'pull_request'
+        run: |
+          git fetch origin ${{ github.head_ref }}:${{ github.head_ref }}
+          git checkout ${{ github.head_ref }}
+
           
       - name: Generate Terraform Documentation
         uses: terraform-docs/gh-actions@v1.4.1
@@ -100,10 +107,11 @@ jobs:
           working-dir: .
           output-file: README.md
           output-method: inject
-          git-push: "true"
+          git-push: true
           git-commit-message: "docs: Update Terraform documentation"
-          git-branch: ${{ github.head_ref }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          git-push-user-name: "GitHub Actions"
+          git-push-user-email: "actions@github.com"
+
 
           
       - name: Terraform Plan
