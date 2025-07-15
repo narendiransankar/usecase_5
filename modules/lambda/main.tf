@@ -40,6 +40,7 @@ resource "aws_lambda_function" "image_processor" {
       SNS_TOPIC   = var.sns_topic_arn
     }
   }
+  layers = ["arn:aws:lambda:ap-south-1:770693421928:layer:Klayers-p39-pillow:1"]
 }
 
 resource "aws_lambda_permission" "allow_s3" {
