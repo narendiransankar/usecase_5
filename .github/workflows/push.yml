@@ -107,10 +107,15 @@ jobs:
           working-dir: .
           output-file: README.md
           output-method: inject
-          git-push: true
-          git-commit-message: "docs: Update Terraform documentation"
-          git-push-user-name: "GitHub Actions"
-          git-push-user-email: "actions@github.com"
+
+      - name: Commit and Push README
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add README.md
+          git commit -m "docs: Update Terraform documentation" || echo "No changes to commit"
+          git push --set-upstream origin ${{ github.head_ref }}
+
 
 
           
